@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock, Paper, Scissors - RevoFun Gaming Company</title>
+    <meta name="description" content="Challenge the computer in RevoFun's Rock, Paper, Scissors game! Test your strategy and luck in this classic game.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/games.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">RevoFun</a>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#games">Games</a></li>
+                <li><a href="index.html#about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="game-container">
+            <!-- Game Header -->
+            <div class="game-header">
+                <h1 class="game-title">✂️ Rock, Paper, Scissors</h1>
+                <div class="game-instructions">
+                    <p><strong>How to Play:</strong></p>
+                    <p>Choose Rock, Paper, or Scissors to beat the computer!</p>
+                    <p><strong>Rules:</strong> Rock beats Scissors, Scissors beat Paper, Paper beats Rock.</p>
+                    <p>First to win 3 rounds wins the game!</p>
+                </div>
+            </div>
+
+            <!-- User Name Input (if not already set) -->
+            <div id="userNameSection" class="form-group" style="display: none;">
+                <label for="playerName">Enter your name (optional):</label>
+                <input type="text" id="playerName" placeholder="Your name here..." maxlength="20">
+                <button id="setNameBtn" class="btn" style="margin-top: 1rem;">Start Game</button>
+            </div>
+
+            <!-- Game Area -->
+            <div class="game-area">
+                <!-- Score Board -->
+                <div class="score-board">
+                    <div class="score-item">
+                        <h3>You</h3>
+                        <div class="score" id="playerScore">0</div>
+                    </div>
+                    <div class="score-item">
+                        <h3>Computer</h3>
+                        <div class="score" id="computerScore">0</div>
+                    </div>
+                    <div class="score-item">
+                        <h3>Round</h3>
+                        <div class="score" id="currentRound">1</div>
+                    </div>
+                </div>
+
+                <!-- Game Status -->
+                <div id="gameStatus" class="game-message">
+                    Choose your move to start the game!
+                </div>
+
+                <!-- Player Choices -->
+                <div class="choices-container">
+                    <button class="choice-btn" data-choice="rock" title="Rock">
+                        🪨
+                    </button>
+                    <button class="choice-btn" data-choice="paper" title="Paper">
+                        📄
+                    </button>
+                    <button class="choice-btn" data-choice="scissors" title="Scissors">
+                        ✂️
+                    </button>
+                </div>
+
+                <!-- Results Area -->
+                <div id="resultsArea" class="results-area" style="display: none;">
+                    <div class="player-choice">
+                        <h3>Your Choice</h3>
+                        <div id="playerChoiceDisplay" class="choice-display">-</div>
+                    </div>
+                    <div class="vs-text">VS</div>
+                    <div class="computer-choice">
+                        <h3>Computer's Choice</h3>
+                        <div id="computerChoiceDisplay" class="choice-display">-</div>
+                    </div>
+                </div>
+
+                <!-- Round Result -->
+                <div id="roundResult" class="round-result" style="display: none;"></div>
+
+                <!-- Game Controls -->
+                <div id="gameControls" style="display: none; text-align: center; margin-top: 2rem;">
+                    <button id="newGameBtn" class="btn btn-success">New Game</button>
+                    <button id="backToHomeBtn" class="btn btn-secondary back-to-home">Back to Home</button>
+                </div>
+
+                <!-- Leaderboard -->
+                <div id="leaderboardContainer"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+    <script src="js/rock-paper-scissors.js"></script>
+</body>
+</html>

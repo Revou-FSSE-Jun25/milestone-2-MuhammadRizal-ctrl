@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RevoFun Gaming Company - Play Amazing Games</title>
+    <meta name="description" content="RevoFun Gaming Company - Experience the best browser-based games. Play Number Guessing, Rock Paper Scissors, Memory Card Game and more!">
+    <meta name="keywords" content="games, browser games, JavaScript games, RevoFun, gaming company, online games">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/games.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">RevoFun</a>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#games">Games</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero fade-in">
+            <h1>Welcome to RevoFun</h1>
+            <p>Experience the thrill of gaming with our collection of exciting browser-based games. From mind-bending puzzles to classic favorites, we've got something for every gamer!</p>
+            <a href="#games" class="btn">Start Playing Now</a>
+        </section>
+
+        <!-- Games Section -->
+        <section id="games" class="games-section">
+            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: var(--primary-color);"> Our Games</h2>
+            
+            <div class="games-grid">
+                <!-- Number Guessing Game Card -->
+                <div class="game-card fade-in">
+                    <span class="game-icon float">🔢</span>
+                    <h3>Number Guessing Game</h3>
+                    <p>Test your intuition! Guess the secret number between 1-100. You have 5 attempts to crack the code. Can you beat the odds?</p>
+                    <a href="number-guessing.html" class="btn">Play Now</a>
+                </div>
+
+                <!-- Rock Paper Scissors Game Card -->
+                <div class="game-card fade-in">
+                    <span class="game-icon float" style="animation-delay: 0.5s;">✂️</span>
+                    <h3>Rock, Paper, Scissors</h3>
+                    <p>The classic game of strategy and luck! Challenge the computer and see who comes out on top. Best of luck, champion!</p>
+                    <a href="rock-paper-scissors.html" class="btn">Play Now</a>
+                </div>
+
+                <!-- Memory Card Game Card -->
+                <div class="game-card fade-in">
+                    <span class="game-icon float" style="animation-delay: 1s;">🧠</span>
+                    <h3>Memory Card Game</h3>
+                    <p>Exercise your memory! Match pairs of cards in this challenging memory game. How quickly can you find all the matches?</p>
+                    <a href="memory-game.html" class="btn">Play Now</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about-section" style="margin-top: 4rem; padding: 4rem; background: rgba(43, 44, 40, 0.8); backdrop-filter: blur(20px); border-radius: 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); border: 1px solid rgba(125, 226, 209, 0.3);">
+            <h2 style="text-align: center; font-size: 3rem; margin-bottom: 3rem; color: #7de2d1; font-weight: 800; letter-spacing: -0.02em;">About RevoFun</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; margin-top: 3rem;">
+                <div style="text-align: center; padding: 2rem; background: rgba(26, 27, 31, 0.6); backdrop-filter: blur(10px); border-radius: 1.5rem; border: 1px solid rgba(125, 226, 209, 0.2); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <div style="font-size: 4rem; margin-bottom: 1.5rem;" class="float">🎯</div>
+                    <h3 style="color: #7de2d1; margin-bottom: 1.5rem; font-size: 1.5rem; font-weight: 700;">Our Mission</h3>
+                    <p style="color: rgba(255, 255, 255, 0.8); line-height: 1.7; font-size: 1.1rem;">To create engaging, accessible games that bring joy and challenge to players of all ages. We believe gaming should be fun, simple, and available to everyone.</p>
+                </div>
+                <div style="text-align: center; padding: 2rem; background: rgba(26, 27, 31, 0.6); backdrop-filter: blur(10px); border-radius: 1.5rem; border: 1px solid rgba(125, 226, 209, 0.2); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <div style="font-size: 4rem; margin-bottom: 1.5rem;" class="float" style="animation-delay: 0.3s;">🚀</div>
+                    <h3 style="color: #7de2d1; margin-bottom: 1.5rem; font-size: 1.5rem; font-weight: 700;">Innovation</h3>
+                    <p style="color: rgba(255, 255, 255, 0.8); line-height: 1.7; font-size: 1.1rem;">We use cutting-edge web technologies to deliver smooth, responsive gaming experiences that work perfectly on any device.</p>
+                </div>
+                <div style="text-align: center; padding: 2rem; background: rgba(26, 27, 31, 0.6); backdrop-filter: blur(10px); border-radius: 1.5rem; border: 1px solid rgba(125, 226, 209, 0.2); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <div style="font-size: 4rem; margin-bottom: 1.5rem;" class="float" style="animation-delay: 0.6s;">🌟</div>
+                    <h3 style="color: #7de2d1; margin-bottom: 1.5rem; font-size: 1.5rem; font-weight: 700;">Community</h3>
+                    <p style="color: rgba(255, 255, 255, 0.8); line-height: 1.7; font-size: 1.1rem;">Join our growing community of gamers! Compete for high scores, share your achievements, and connect with fellow players.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features-section" style="margin-top: 4rem; padding: 4rem; background: linear-gradient(135deg, rgba(51, 153, 137, 0.1) 0%, rgba(125, 226, 209, 0.1) 100%); backdrop-filter: blur(20px); border-radius: 2rem; border: 1px solid rgba(125, 226, 209, 0.2);">
+            <h2 style="text-align: center; font-size: 3rem; margin-bottom: 3rem; color: #7de2d1; font-weight: 800; letter-spacing: -0.02em;">Why Choose RevoFun?</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2.5rem;">
+                <div style="text-align: center; padding: 2.5rem; background: rgba(43, 44, 40, 0.8); backdrop-filter: blur(20px); border-radius: 1.5rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); border: 1px solid rgba(125, 226, 209, 0.3); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);" onmouseover="this.style.transform='translateY(-8px) scale(1.02)'" onmouseout="this.style.transform='translateY(0) scale(1)'">
+                    <div style="font-size: 3rem; margin-bottom: 1.5rem;" class="float">⚡</div>
+                    <h3 style="color: #7de2d1; margin-bottom: 1.5rem; font-size: 1.3rem; font-weight: 700;">Instant Play</h3>
+                    <p style="color: rgba(255, 255, 255, 0.8); font-size: 1rem; line-height: 1.6;">No downloads, no installations. Just click and play!</p>
+                </div>
+                <div style="text-align: center; padding: 2.5rem; background: rgba(43, 44, 40, 0.8); backdrop-filter: blur(20px); border-radius: 1.5rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); border: 1px solid rgba(125, 226, 209, 0.3); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);" onmouseover="this.style.transform='translateY(-8px) scale(1.02)'" onmouseout="this.style.transform='translateY(0) scale(1)'">
+                    <div style="font-size: 3rem; margin-bottom: 1.5rem;" class="float" style="animation-delay: 0.2s;">📱</div>
+                    <h3 style="color: #7de2d1; margin-bottom: 1.5rem; font-size: 1.3rem; font-weight: 700;">Mobile Friendly</h3>
+                    <p style="color: rgba(255, 255, 255, 0.8); font-size: 1rem; line-height: 1.6;">Play on any device, anywhere, anytime!</p>
+                </div>
+                <div style="text-align: center; padding: 2.5rem; background: rgba(43, 44, 40, 0.8); backdrop-filter: blur(20px); border-radius: 1.5rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); border: 1px solid rgba(125, 226, 209, 0.3); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);" onmouseover="this.style.transform='translateY(-8px) scale(1.02)'" onmouseout="this.style.transform='translateY(0) scale(1)'">
+                    <div style="font-size: 3rem; margin-bottom: 1.5rem;" class="float" style="animation-delay: 0.4s;">🏆</div>
+                    <h3 style="color: #7de2d1; margin-bottom: 1.5rem; font-size: 1.3rem; font-weight: 700;">Leaderboards</h3>
+                    <p style="color: rgba(255, 255, 255, 0.8); font-size: 1rem; line-height: 1.6;">Compete for the top spot and track your progress!</p>
+                </div>
+                <div style="text-align: center; padding: 2.5rem; background: rgba(43, 44, 40, 0.8); backdrop-filter: blur(20px); border-radius: 1.5rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); border: 1px solid rgba(125, 226, 209, 0.3); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);" onmouseover="this.style.transform='translateY(-8px) scale(1.02)'" onmouseout="this.style.transform='translateY(0) scale(1)'">
+                    <div style="font-size: 3rem; margin-bottom: 1.5rem;" class="float" style="animation-delay: 0.6s;">🆓</div>
+                    <h3 style="color: #7de2d1; margin-bottom: 1.5rem; font-size: 1.3rem; font-weight: 700;">Completely Free</h3>
+                    <p style="color: rgba(255, 255, 255, 0.8); font-size: 1rem; line-height: 1.6;">All games are free to play, no hidden costs!</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer style="background: rgba(43, 44, 40, 0.8); backdrop-filter: blur(20px); color: white; text-align: center; padding: 3rem 2rem; margin-top: 4rem; border-radius: 2rem; border: 1px solid rgba(125, 226, 209, 0.3); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <h3 style="margin-bottom: 1.5rem; color: #7de2d1; font-size: 2rem; font-weight: 800; letter-spacing: -0.01em;">RevoFun Gaming Company</h3>
+            <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 2rem; font-size: 1.1rem; line-height: 1.6;">Bringing joy through gaming, one click at a time.</p>
+            <div style="display: flex; justify-content: center; gap: 3rem; margin-bottom: 2rem; flex-wrap: wrap;">
+                <a href="#" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: all 0.3s ease; padding: 0.5rem 1rem; border-radius: 25px; font-weight: 500;" onmouseover="this.style.color='#7de2d1'; this.style.background='rgba(125,226,209,0.1)'" onmouseout="this.style.color='rgba(255,255,255,0.8)'; this.style.background='transparent'">Privacy Policy</a>
+                <a href="#" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: all 0.3s ease; padding: 0.5rem 1rem; border-radius: 25px; font-weight: 500;" onmouseover="this.style.color='#7de2d1'; this.style.background='rgba(125,226,209,0.1)'" onmouseout="this.style.color='rgba(255,255,255,0.8)'; this.style.background='transparent'">Terms of Service</a>
+                <a href="#" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: all 0.3s ease; padding: 0.5rem 1rem; border-radius: 25px; font-weight: 500;" onmouseover="this.style.color='#7de2d1'; this.style.background='rgba(125,226,209,0.1)'" onmouseout="this.style.color='rgba(255,255,255,0.8)'; this.style.background='transparent'">Contact Us</a>
+            </div>
+            <p style="color: rgba(255, 255, 255, 0.6); font-size: 0.9rem; margin-top: 1rem;">&copy; 2024 RevoFun Gaming Company. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+</html>

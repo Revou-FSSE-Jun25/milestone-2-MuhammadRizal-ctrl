@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game - RevoFun Gaming Company</title>
+    <meta name="description" content="Test your intuition in RevoFun's Number Guessing Game! Guess the secret number between 1-100 with only 5 attempts.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/games.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">RevoFun</a>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#games">Games</a></li>
+                <li><a href="index.html#about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="game-container">
+            <!-- Game Header -->
+            <div class="game-header">
+                <h1 class="game-title">🔢 Number Guessing Game</h1>
+                <div class="game-instructions">
+                    <p><strong>How to Play:</strong></p>
+                    <p>I'm thinking of a number between 1 and 100. Can you guess what it is?</p>
+                    <p>You have <strong>5 attempts</strong> to guess the correct number. I'll give you helpful hints about its mathematical properties like whether it's even/odd, prime, divisible by certain numbers, and more!</p>
+                </div>
+            </div>
+
+            <!-- User Name Input (if not already set) -->
+            <div id="userNameSection" class="form-group" style="display: none;">
+                <label for="playerName">Enter your name (optional):</label>
+                <input type="text" id="playerName" placeholder="Your name here..." maxlength="20">
+                <button id="setNameBtn" class="btn" style="margin-top: 1rem;">Start Game</button>
+            </div>
+
+            <!-- Game Area -->
+            <div class="game-area">
+                <!-- Score Display -->
+                <div class="score-display">
+                    <div>Attempts Left: <span id="attemptsLeft">5</span></div>
+                    <div>Best Score: <span id="bestScore">-</span></div>
+                </div>
+
+                <!-- Hint Display -->
+                <div id="hintDisplay" class="hint-display">
+                    Ready to start? Enter your guess below!
+                </div>
+
+                <!-- Guess Input -->
+                <div class="form-group">
+                    <label for="guessInput">Your Guess (1-100):</label>
+                    <input type="number" id="guessInput" min="1" max="100" placeholder="Enter your guess..." disabled>
+                    <button id="submitGuess" class="btn" style="margin-top: 1rem;" disabled>Submit Guess</button>
+                </div>
+
+                <!-- Game Controls -->
+                <div id="gameControls" style="display: none;">
+                    <button id="newGameBtn" class="btn btn-success">New Game</button>
+                    <button id="backToHomeBtn" class="btn btn-secondary back-to-home">Back to Home</button>
+                </div>
+
+                <!-- Leaderboard -->
+                <div id="leaderboardContainer"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+    <script src="js/number-guessing.js"></script>
+</body>
+</html>
