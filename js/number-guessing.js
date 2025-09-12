@@ -20,74 +20,182 @@ let leaderboardContainer;
  * Initialize the game when DOM is loaded
  */
 document.addEventListener('DOMContentLoaded', function() {
-    // Get DOM elements
-    initializeElements();
-    
-    // Set up event listeners
-    setupEventListeners();
-    
-    // Check if user is already set
-    checkUserStatus();
-    
-    // Load best score
-    loadBestScore();
-    
-    // Create leaderboard
-    createLeaderboard();
+    try {
+        // Get DOM elements
+        initializeElements();
+        
+        // Set up event listeners
+        setupEventListeners();
+        
+        // Check if user is already set
+        checkUserStatus();
+        
+        // Load best score
+        loadBestScore();
+        
+        // Create leaderboard
+        createLeaderboard();
+        
+        console.log('Number Guessing Game initialized successfully');
+    } catch (error) {
+        console.error('Error initializing Number Guessing Game:', error);
+        showErrorMessage('Failed to initialize the Number Guessing Game. Please refresh the page.');
+    }
 });
 
 /**
  * Initialize DOM elements
  */
 function initializeElements() {
-    guessInput = document.getElementById('guessInput');
-    submitBtn = document.getElementById('submitGuess');
-    hintDisplay = document.getElementById('hintDisplay');
-    attemptsDisplay = document.getElementById('attemptsLeft');
-    bestScoreDisplay = document.getElementById('bestScore');
-    userNameSection = document.getElementById('userNameSection');
-    setNameBtn = document.getElementById('setNameBtn');
-    playerNameInput = document.getElementById('playerName');
-    gameControls = document.getElementById('gameControls');
-    newGameBtn = document.getElementById('newGameBtn');
-    backToHomeBtn = document.getElementById('backToHomeBtn');
-    leaderboardContainer = document.getElementById('leaderboardContainer');
+    try {
+        // Required elements
+        const requiredElements = [
+            'guessInput', 'submitGuess', 'hintDisplay', 'attemptsLeft', 
+            'bestScore', 'userNameSection', 'setNameBtn', 'playerName', 
+            'gameControls', 'newGameBtn', 'backToHomeBtn', 'leaderboardContainer'
+        ];
+
+        const missingElements = [];
+
+        // Get all elements and check for missing ones
+        guessInput = document.getElementById('guessInput');
+        submitBtn = document.getElementById('submitGuess');
+        hintDisplay = document.getElementById('hintDisplay');
+        attemptsDisplay = document.getElementById('attemptsLeft');
+        bestScoreDisplay = document.getElementById('bestScore');
+        userNameSection = document.getElementById('userNameSection');
+        setNameBtn = document.getElementById('setNameBtn');
+        playerNameInput = document.getElementById('playerName');
+        gameControls = document.getElementById('gameControls');
+        newGameBtn = document.getElementById('newGameBtn');
+        backToHomeBtn = document.getElementById('backToHomeBtn');
+        leaderboardContainer = document.getElementById('leaderboardContainer');
+
+        // Check for missing elements
+        if (!guessInput) missingElements.push('guessInput');
+        if (!submitBtn) missingElements.push('submitBtn');
+        if (!hintDisplay) missingElements.push('hintDisplay');
+        if (!attemptsDisplay) missingElements.push('attemptsDisplay');
+        if (!bestScoreDisplay) missingElements.push('bestScoreDisplay');
+        if (!userNameSection) missingElements.push('userNameSection');
+        if (!setNameBtn) missingElements.push('setNameBtn');
+        if (!playerNameInput) missingElements.push('playerNameInput');
+        if (!gameControls) missingElements.push('gameControls');
+        if (!newGameBtn) missingElements.push('newGameBtn');
+        if (!backToHomeBtn) missingElements.push('backToHomeBtn');
+        if (!leaderboardContainer) missingElements.push('leaderboardContainer');
+
+        if (missingElements.length > 0) {
+            throw new Error(`Missing required DOM elements: ${missingElements.join(', ')}`);
+        }
+
+        console.log('All DOM elements initialized successfully');
+    } catch (error) {
+        console.error('Error initializing DOM elements:', error);
+        showErrorMessage('Failed to initialize game elements. Please check the page structure.');
+        throw error;
+    }
 }
 
 /**
  * Set up event listeners
  */
 function setupEventListeners() {
-    // Submit guess button
-    submitBtn.addEventListener('click', handleGuess);
-    
-    // Enter key in input field
-    guessInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter' && !submitBtn.disabled) {
-            handleGuess();
+    try {
+        // Submit guess button
+        if (submitBtn) {
+            submitBtn.addEventListener('click', function(e) {
+                try {
+                    e.preventDefault();
+                    handleGuess();
+                } catch (error) {
+                    console.error('Error handling guess submission:', error);
+                    showErrorMessage('Failed to process your guess. Please try again.');
+                }
+            });
         }
-    });
-    
-    // Input validation
-    guessInput.addEventListener('input', validateInput);
-    
-    // Set name button
-    setNameBtn.addEventListener('click', handleSetName);
-    
-    // Enter key in name input
-    playerNameInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            handleSetName();
+        
+        // Enter key in input field
+        if (guessInput) {
+            guessInput.addEventListener('keypress', function(e) {
+                try {
+                    if (e.key === 'Enter' && !submitBtn.disabled) {
+                        e.preventDefault();
+                        handleGuess();
+                    }
+                } catch (error) {
+                    console.error('Error handling keypress:', error);
+                }
+            });
+            
+            // Input validation
+            guessInput.addEventListener('input', function(e) {
+                try {
+                    validateInput();
+                } catch (error) {
+                    console.error('Error validating input:', error);
+                }
+            });
         }
-    });
-    
-    // New game button
-    newGameBtn.addEventListener('click', startNewGame);
-    
-    // Back to home button
-    backToHomeBtn.addEventListener('click', function() {
-        window.location.href = 'index.html';
-    });
+        
+        // Set name button
+        if (setNameBtn) {
+            setNameBtn.addEventListener('click', function(e) {
+                try {
+                    e.preventDefault();
+                    handleSetName();
+                } catch (error) {
+                    console.error('Error handling name setting:', error);
+                    showErrorMessage('Failed to set your name. Please try again.');
+                }
+            });
+        }
+        
+        // Enter key in name input
+        if (playerNameInput) {
+            playerNameInput.addEventListener('keypress', function(e) {
+                try {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleSetName();
+                    }
+                } catch (error) {
+                    console.error('Error handling name input keypress:', error);
+                }
+            });
+        }
+        
+        // New game button
+        if (newGameBtn) {
+            newGameBtn.addEventListener('click', function(e) {
+                try {
+                    e.preventDefault();
+                    startNewGame();
+                } catch (error) {
+                    console.error('Error starting new game:', error);
+                    showErrorMessage('Failed to start new game. Please try again.');
+                }
+            });
+        }
+        
+        // Back to home button
+        if (backToHomeBtn) {
+            backToHomeBtn.addEventListener('click', function(e) {
+                try {
+                    e.preventDefault();
+                    window.location.href = 'index.html';
+                } catch (error) {
+                    console.error('Error navigating to home:', error);
+                    showErrorMessage('Failed to navigate to home page.');
+                }
+            });
+        }
+
+        console.log('Event listeners set up successfully');
+    } catch (error) {
+        console.error('Error setting up event listeners:', error);
+        showErrorMessage('Failed to set up game controls. Some features may not work.');
+    }
 }
 
 /**
@@ -161,32 +269,64 @@ function startGame() {
  * Handle guess submission
  */
 function handleGuess() {
-    if (!gameStarted || gameEnded) return;
-    
-    const guess = parseInt(guessInput.value);
-    
-    // Validate guess
-    if (isNaN(guess) || guess < 1 || guess > 100) {
-        showMessage('Please enter a valid number between 1 and 100', 'error');
-        return;
+    try {
+        // Validate game state
+        if (!gameStarted || gameEnded) {
+            console.warn('Attempted to guess when game is not active');
+            return;
+        }
+
+        // Validate input element
+        if (!guessInput) {
+            throw new Error('Guess input element not found');
+        }
+
+        const inputValue = guessInput.value;
+        if (!inputValue || inputValue.trim() === '') {
+            showMessage('Please enter a number before submitting', 'error');
+            return;
+        }
+
+        const guess = parseInt(inputValue);
+        
+        // Validate guess
+        if (isNaN(guess)) {
+            showMessage('Please enter a valid number', 'error');
+            return;
+        }
+
+        if (guess < 1 || guess > 100) {
+            showMessage('Please enter a number between 1 and 100', 'error');
+            return;
+        }
+
+        // Validate secret number
+        if (!secretNumber || secretNumber < 1 || secretNumber > 100) {
+            throw new Error('Invalid secret number state');
+        }
+        
+        // Decrease attempts
+        attemptsLeft--;
+        updateAttemptsDisplay();
+        
+        // Check if guess is correct
+        if (guess === secretNumber) {
+            handleCorrectGuess();
+        } else if (attemptsLeft === 0) {
+            handleGameOver();
+        } else {
+            handleWrongGuess(guess);
+        }
+        
+        // Clear input for next guess
+        guessInput.value = '';
+        if (guessInput.focus) {
+            guessInput.focus();
+        }
+    } catch (error) {
+        console.error('Error handling guess:', error);
+        showErrorMessage('An error occurred while processing your guess. Please try again.');
     }
-    
-    // Decrease attempts
-    attemptsLeft--;
-    updateAttemptsDisplay();
-    
-    // Check if guess is correct
-    if (guess === secretNumber) {
-        handleCorrectGuess();
-    } else if (attemptsLeft === 0) {
-        handleGameOver();
-    } else {
-        handleWrongGuess(guess);
-    }
-    
-    // Clear input for next guess
-    guessInput.value = '';
-    guessInput.focus();
 }
 
 /**

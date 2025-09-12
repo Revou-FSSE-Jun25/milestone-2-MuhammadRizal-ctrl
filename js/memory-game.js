@@ -28,20 +28,27 @@ let leaderboardContainer;
  * Initialize the game when DOM is loaded
  */
 document.addEventListener('DOMContentLoaded', function() {
-    // Get DOM elements
-    initializeElements();
-    
-    // Set up event listeners
-    setupEventListeners();
-    
-    // Check if user is already set
-    checkUserStatus();
-    
-    // Create leaderboard
-    createLeaderboard();
-    
-    // Initialize game grid
-    initializeGameGrid();
+    try {
+        // Get DOM elements
+        initializeElements();
+        
+        // Set up event listeners
+        setupEventListeners();
+        
+        // Check if user is already set
+        checkUserStatus();
+        
+        // Create leaderboard
+        createLeaderboard();
+        
+        // Initialize game grid
+        initializeGameGrid();
+        
+        console.log('Memory Card Game initialized successfully');
+    } catch (error) {
+        console.error('Error initializing Memory Card Game:', error);
+        showErrorMessage('Failed to initialize the Memory Card Game. Please refresh the page.');
+    }
 });
 
 /**
@@ -232,41 +239,76 @@ function startGame() {
  * @param {HTMLElement} cardElement - Clicked card element
  */
 function handleCardClick(cardElement) {
-    // Don't allow clicking if card is already flipped or matched
-    if (cardElement.classList.contains('flipped') || 
-        cardElement.classList.contains('matched') ||
-        cardElement.classList.contains('disabled')) {
-        return;
-    }
-    
-    // Don't allow clicking if two cards are already flipped
-    if (flippedCards.length >= 2) {
-        return;
-    }
-    
-    // Flip the card
-    flipCard(cardElement);
-    
-    // Add to flipped cards
-    const cardIndex = parseInt(cardElement.dataset.index);
-    flippedCards.push({
-        element: cardElement,
-        card: cards[cardIndex]
-    });
-    
-    // Check if two cards are flipped
-    if (flippedCards.length === 2) {
-        // Increment move count
-        moveCount++;
-        updateGameStats();
+    try {
+        // Validate card element
+        if (!cardElement) {
+            console.error('Invalid card element provided');
+            return;
+        }
+
+        // Validate game state
+        if (!gameStarted || gameEnded) {
+            console.warn('Attempted to click card when game is not active');
+            return;
+        }
+
+        // Don't allow clicking if card is already flipped or matched
+        if (cardElement.classList.contains('flipped') || 
+            cardElement.classList.contains('matched') ||
+            cardElement.classList.contains('disabled')) {
+            return;
+        }
         
-        // Disable all cards temporarily
-        disableAllCards();
+        // Don't allow clicking if two cards are already flipped
+        if (flippedCards.length >= 2) {
+            return;
+        }
+
+        // Validate card data
+        const cardIndex = parseInt(cardElement.dataset.index);
+        if (isNaN(cardIndex) || cardIndex < 0 || cardIndex >= cards.length) {
+            console.error('Invalid card index:', cardIndex);
+            showErrorMessage('Invalid card data. Please refresh the game.');
+            return;
+        }
+
+        if (!cards[cardIndex]) {
+            console.error('Card data not found for index:', cardIndex);
+            showErrorMessage('Card data corrupted. Please refresh the game.');
+            return;
+        }
         
-        // Check for match after a short delay
-        setTimeout(() => {
-            checkForMatch();
-        }, 1000);
+        // Flip the card
+        flipCard(cardElement);
+        
+        // Add to flipped cards
+        flippedCards.push({
+            element: cardElement,
+            card: cards[cardIndex]
+        });
+        
+        // Check if two cards are flipped
+        if (flippedCards.length === 2) {
+            // Increment move count
+            moveCount++;
+            updateGameStats();
+            
+            // Disable all cards temporarily
+            disableAllCards();
+            
+            // Check for match after a short delay
+            setTimeout(() => {
+                try {
+                    checkForMatch();
+                } catch (error) {
+                    console.error('Error checking for match:', error);
+                    showErrorMessage('Error processing card match. Please try again.');
+                }
+            }, 1000);
+        }
+    } catch (error) {
+        console.error('Error handling card click:', error);
+        showErrorMessage('An error occurred while processing your card selection. Please try again.');
     }
 }
 

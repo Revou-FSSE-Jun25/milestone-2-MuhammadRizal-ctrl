@@ -11,17 +11,24 @@ let gameScores = {};
  * Initialize the application when DOM is loaded
  */
 document.addEventListener('DOMContentLoaded', function() {
-    // Load user data from localStorage
-    loadUserData();
-    
-    // Initialize navigation
-    initializeNavigation();
-    
-    // Add fade-in animation to main content
-    addFadeInAnimation();
-    
-    // Initialize any game-specific functionality if on a game page
-    initializeGamePage();
+    try {
+        // Load user data from localStorage
+        loadUserData();
+        
+        // Initialize navigation
+        initializeNavigation();
+        
+        // Add fade-in animation to main content
+        addFadeInAnimation();
+        
+        // Initialize any game-specific functionality if on a game page
+        initializeGamePage();
+        
+        console.log('RevoFun application initialized successfully');
+    } catch (error) {
+        console.error('Error initializing RevoFun application:', error);
+        showErrorMessage('Failed to initialize the application. Please refresh the page.');
+    }
 });
 
 /**
@@ -29,22 +36,45 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 function loadUserData() {
     try {
+        // Check if localStorage is available
+        if (!isLocalStorageAvailable()) {
+            console.warn('localStorage is not available. Data will not persist.');
+            currentUser = null;
+            gameScores = {};
+            return;
+        }
+
         // Load current user
         const savedUser = localStorage.getItem('revoFunUser');
         if (savedUser) {
-            currentUser = JSON.parse(savedUser);
+            const parsedUser = JSON.parse(savedUser);
+            // Validate user data structure
+            if (parsedUser && typeof parsedUser === 'object' && parsedUser.name) {
+                currentUser = parsedUser;
+            } else {
+                console.warn('Invalid user data found, resetting to null');
+                currentUser = null;
+            }
         }
         
         // Load game scores
         const savedScores = localStorage.getItem('revoFunScores');
         if (savedScores) {
-            gameScores = JSON.parse(savedScores);
+            const parsedScores = JSON.parse(savedScores);
+            // Validate scores data structure
+            if (parsedScores && typeof parsedScores === 'object') {
+                gameScores = parsedScores;
+            } else {
+                console.warn('Invalid scores data found, resetting to empty object');
+                gameScores = {};
+            }
         }
     } catch (error) {
         console.error('Error loading user data:', error);
         // Reset to defaults if there's an error
         currentUser = null;
         gameScores = {};
+        showErrorMessage('Failed to load saved data. Starting fresh.');
     }
 }
 
@@ -53,12 +83,23 @@ function loadUserData() {
  */
 function saveUserData() {
     try {
-        if (currentUser) {
+        // Check if localStorage is available
+        if (!isLocalStorageAvailable()) {
+            console.warn('localStorage is not available. Data will not be saved.');
+            return;
+        }
+
+        // Validate data before saving
+        if (currentUser && typeof currentUser === 'object' && currentUser.name) {
             localStorage.setItem('revoFunUser', JSON.stringify(currentUser));
         }
-        localStorage.setItem('revoFunScores', JSON.stringify(gameScores));
+        
+        if (gameScores && typeof gameScores === 'object') {
+            localStorage.setItem('revoFunScores', JSON.stringify(gameScores));
+        }
     } catch (error) {
         console.error('Error saving user data:', error);
+        showErrorMessage('Failed to save data. Your progress may not be saved.');
     }
 }
 
@@ -67,12 +108,33 @@ function saveUserData() {
  * @param {string} name - User's name
  */
 function setCurrentUser(name) {
-    currentUser = {
-        name: name.trim(),
-        joinDate: new Date().toISOString(),
-        totalGamesPlayed: 0
-    };
-    saveUserData();
+    try {
+        // Validate input
+        if (!name || typeof name !== 'string') {
+            throw new Error('Invalid name provided');
+        }
+
+        const trimmedName = name.trim();
+        if (trimmedName.length === 0) {
+            throw new Error('Name cannot be empty');
+        }
+
+        if (trimmedName.length > 50) {
+            throw new Error('Name is too long (max 50 characters)');
+        }
+
+        currentUser = {
+            name: trimmedName,
+            joinDate: new Date().toISOString(),
+            totalGamesPlayed: 0
+        };
+        saveUserData();
+        console.log('User set successfully:', trimmedName);
+    } catch (error) {
+        console.error('Error setting user:', error);
+        showErrorMessage('Failed to set user name. Please try again.');
+        throw error; // Re-throw to allow calling code to handle
+    }
 }
 
 /**
@@ -134,62 +196,114 @@ function getLeaderboard(gameName) {
  * Initialize navigation functionality
  */
 function initializeNavigation() {
-    // Add click handlers for navigation links
-    const navLinks = document.querySelectorAll('.nav-menu a');
-    navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            // Add smooth transition effect
-            this.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                this.style.transform = 'scale(1)';
-            }, 150);
-            
-            // Handle smooth scrolling for anchor links
-            const href = this.getAttribute('href');
-            if (href.startsWith('#')) {
-                e.preventDefault();
-                const targetId = href.substring(1);
-                const targetElement = document.getElementById(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            }
-        });
-    });
-    
-    // Add back to home functionality
-    const backButtons = document.querySelectorAll('.back-to-home');
-    backButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            // Add loading effect
-            this.textContent = 'Loading...';
-            this.disabled = true;
-            
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 300);
-        });
-    });
-    
-    // Add smooth scrolling to all internal links
-    const internalLinks = document.querySelectorAll('a[href^="#"]');
-    internalLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href').substring(1);
-            const targetElement = document.getElementById(targetId);
-            if (targetElement) {
-                targetElement.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
+    try {
+        // Add click handlers for navigation links
+        const navLinks = document.querySelectorAll('.nav-menu a');
+        if (navLinks.length === 0) {
+            console.warn('No navigation links found');
+            return;
+        }
+
+        navLinks.forEach((link, index) => {
+            try {
+                link.addEventListener('click', function(e) {
+                    try {
+                        // Add smooth transition effect
+                        this.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            try {
+                                this.style.transform = 'scale(1)';
+                            } catch (error) {
+                                console.warn('Error resetting transform:', error);
+                            }
+                        }, 150);
+                        
+                        // Handle smooth scrolling for anchor links
+                        const href = this.getAttribute('href');
+                        if (href && href.startsWith('#')) {
+                            e.preventDefault();
+                            const targetId = href.substring(1);
+                            const targetElement = document.getElementById(targetId);
+                            if (targetElement) {
+                                targetElement.scrollIntoView({
+                                    behavior: 'smooth',
+                                    block: 'start'
+                                });
+                            } else {
+                                console.warn(`Target element with id '${targetId}' not found`);
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error handling navigation click:', error);
+                    }
                 });
+            } catch (error) {
+                console.error(`Error adding event listener to nav link ${index}:`, error);
             }
         });
-    });
+        
+        // Add back to home functionality
+        const backButtons = document.querySelectorAll('.back-to-home');
+        backButtons.forEach((button, index) => {
+            try {
+                button.addEventListener('click', function(e) {
+                    try {
+                        e.preventDefault();
+                        // Add loading effect
+                        this.textContent = 'Loading...';
+                        this.disabled = true;
+                        
+                        setTimeout(() => {
+                            try {
+                                window.location.href = 'index.html';
+                            } catch (error) {
+                                console.error('Error navigating to home:', error);
+                                this.textContent = 'Back to Home';
+                                this.disabled = false;
+                                showErrorMessage('Failed to navigate to home page');
+                            }
+                        }, 300);
+                    } catch (error) {
+                        console.error('Error handling back button click:', error);
+                    }
+                });
+            } catch (error) {
+                console.error(`Error adding event listener to back button ${index}:`, error);
+            }
+        });
+        
+        // Add smooth scrolling to all internal links
+        const internalLinks = document.querySelectorAll('a[href^="#"]');
+        internalLinks.forEach((link, index) => {
+            try {
+                link.addEventListener('click', function(e) {
+                    try {
+                        e.preventDefault();
+                        const href = this.getAttribute('href');
+                        if (href) {
+                            const targetId = href.substring(1);
+                            const targetElement = document.getElementById(targetId);
+                            if (targetElement) {
+                                targetElement.scrollIntoView({
+                                    behavior: 'smooth',
+                                    block: 'start'
+                                });
+                            } else {
+                                console.warn(`Target element with id '${targetId}' not found`);
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error handling internal link click:', error);
+                    }
+                });
+            } catch (error) {
+                console.error(`Error adding event listener to internal link ${index}:`, error);
+            }
+        });
+    } catch (error) {
+        console.error('Error initializing navigation:', error);
+        showErrorMessage('Failed to initialize navigation. Some features may not work properly.');
+    }
 }
 
 /**
@@ -239,26 +353,79 @@ function initializeGamePage() {
  * @param {number} duration - Duration to show message (ms)
  */
 function showMessage(message, type = 'info', duration = 3000) {
-    // Remove existing messages
-    const existingMessages = document.querySelectorAll('.game-message');
-    existingMessages.forEach(msg => msg.remove());
-    
-    // Create new message element
-    const messageElement = document.createElement('div');
-    messageElement.className = `game-message ${type}`;
-    messageElement.textContent = message;
-    
-    // Add to game area
-    const gameArea = document.querySelector('.game-area');
-    if (gameArea) {
-        gameArea.insertBefore(messageElement, gameArea.firstChild);
-        
-        // Auto-remove after duration
-        setTimeout(() => {
-            if (messageElement.parentNode) {
-                messageElement.remove();
+    try {
+        // Validate inputs
+        if (!message || typeof message !== 'string') {
+            console.error('Invalid message provided to showMessage');
+            return;
+        }
+
+        if (!['success', 'error', 'info', 'warning'].includes(type)) {
+            type = 'info';
+        }
+
+        // Remove existing messages
+        const existingMessages = document.querySelectorAll('.game-message');
+        existingMessages.forEach(msg => {
+            try {
+                msg.remove();
+            } catch (e) {
+                console.warn('Error removing existing message:', e);
             }
-        }, duration);
+        });
+        
+        // Create new message element
+        const messageElement = document.createElement('div');
+        messageElement.className = `game-message ${type}`;
+        messageElement.textContent = message;
+        
+        // Add to game area or body if game area not found
+        const gameArea = document.querySelector('.game-area');
+        const targetContainer = gameArea || document.body;
+        
+        if (targetContainer) {
+            targetContainer.insertBefore(messageElement, targetContainer.firstChild);
+            
+            // Auto-remove after duration
+            setTimeout(() => {
+                try {
+                    if (messageElement.parentNode) {
+                        messageElement.remove();
+                    }
+                } catch (e) {
+                    console.warn('Error removing message element:', e);
+                }
+            }, duration);
+        } else {
+            console.error('No suitable container found for message display');
+        }
+    } catch (error) {
+        console.error('Error showing message:', error);
+        // Fallback to alert if DOM manipulation fails
+        alert(message);
+    }
+}
+
+/**
+ * Show error message with enhanced styling
+ * @param {string} message - Error message to display
+ */
+function showErrorMessage(message) {
+    showMessage(message, 'error', 5000);
+}
+
+/**
+ * Check if localStorage is available
+ * @returns {boolean} True if localStorage is available
+ */
+function isLocalStorageAvailable() {
+    try {
+        const test = '__localStorage_test__';
+        localStorage.setItem(test, test);
+        localStorage.removeItem(test);
+        return true;
+    } catch (e) {
+        return false;
     }
 }
 
@@ -373,6 +540,78 @@ function createLeaderboard(gameName, container) {
     container.innerHTML = leaderboardHTML;
 }
 
+/**
+ * Global error handler for unhandled errors
+ */
+window.addEventListener('error', function(event) {
+    console.error('Unhandled error:', event.error);
+    showErrorMessage('An unexpected error occurred. Please refresh the page if problems persist.');
+});
+
+/**
+ * Global error handler for unhandled promise rejections
+ */
+window.addEventListener('unhandledrejection', function(event) {
+    console.error('Unhandled promise rejection:', event.reason);
+    showErrorMessage('An unexpected error occurred. Please refresh the page if problems persist.');
+});
+
+/**
+ * Validate DOM element exists and is accessible
+ * @param {HTMLElement} element - Element to validate
+ * @param {string} name - Name of element for error messages
+ * @returns {boolean} True if element is valid
+ */
+function validateElement(element, name) {
+    if (!element) {
+        console.error(`Element '${name}' not found`);
+        return false;
+    }
+    if (!element.isConnected) {
+        console.error(`Element '${name}' is not connected to DOM`);
+        return false;
+    }
+    return true;
+}
+
+/**
+ * Safe DOM query selector with error handling
+ * @param {string} selector - CSS selector
+ * @param {string} name - Name for error messages
+ * @returns {HTMLElement|null} Found element or null
+ */
+function safeQuerySelector(selector, name) {
+    try {
+        const element = document.querySelector(selector);
+        if (!element) {
+            console.warn(`Element '${name}' not found with selector: ${selector}`);
+        }
+        return element;
+    } catch (error) {
+        console.error(`Error querying selector '${selector}' for '${name}':`, error);
+        return null;
+    }
+}
+
+/**
+ * Safe DOM query selector all with error handling
+ * @param {string} selector - CSS selector
+ * @param {string} name - Name for error messages
+ * @returns {NodeList} Found elements or empty NodeList
+ */
+function safeQuerySelectorAll(selector, name) {
+    try {
+        const elements = document.querySelectorAll(selector);
+        if (elements.length === 0) {
+            console.warn(`No elements found with selector: ${selector} for '${name}'`);
+        }
+        return elements;
+    } catch (error) {
+        console.error(`Error querying selector '${selector}' for '${name}':`, error);
+        return document.querySelectorAll(''); // Return empty NodeList
+    }
+}
+
 // Export functions for use in other scripts (if using modules)
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
@@ -381,6 +620,7 @@ if (typeof module !== 'undefined' && module.exports) {
         saveGameScore,
         getLeaderboard,
         showMessage,
+        showErrorMessage,
         formatNumber,
         getRandomNumber,
         shuffleArray,
@@ -388,6 +628,10 @@ if (typeof module !== 'undefined' && module.exports) {
         isMobile,
         setButtonLoading,
         removeButtonLoading,
-        createLeaderboard
+        createLeaderboard,
+        isLocalStorageAvailable,
+        validateElement,
+        safeQuerySelector,
+        safeQuerySelectorAll
     };
 }

@@ -35,18 +35,24 @@ let leaderboardContainer;
  * Initialize the game when DOM is loaded
  */
 document.addEventListener('DOMContentLoaded', function() {
-    // Get DOM elements
-    initializeElements();
-    
-    // Set up event listeners
-    setupEventListeners();
-    
-    // Check if user is already set
-    checkUserStatus();
-    
-    // Create leaderboard
-    createLeaderboard();
-    
+    try {
+        // Get DOM elements
+        initializeElements();
+        
+        // Set up event listeners
+        setupEventListeners();
+        
+        // Check if user is already set
+        checkUserStatus();
+        
+        // Create leaderboard
+        createLeaderboard();
+        
+        console.log('Rock Paper Scissors Game initialized successfully');
+    } catch (error) {
+        console.error('Error initializing Rock Paper Scissors Game:', error);
+        showErrorMessage('Failed to initialize the Rock Paper Scissors Game. Please refresh the page.');
+    }
 });
 
 /**
@@ -75,33 +81,95 @@ function initializeElements() {
  * Set up event listeners
  */
 function setupEventListeners() {
-    // Choice buttons
-    const choiceButtons = document.querySelectorAll('.choice-btn');
-    choiceButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            if (!gameEnded) {
-                handlePlayerChoice(this.dataset.choice);
-            }
-        });
-    });
-    
-    // Set name button
-    setNameBtn.addEventListener('click', handleSetName);
-    
-    // Enter key in name input
-    playerNameInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            handleSetName();
+    try {
+        // Choice buttons
+        const choiceButtons = document.querySelectorAll('.choice-btn');
+        if (choiceButtons.length === 0) {
+            console.warn('No choice buttons found');
+        } else {
+            choiceButtons.forEach((button, index) => {
+                try {
+                    button.addEventListener('click', function(e) {
+                        try {
+                            e.preventDefault();
+                            if (!gameEnded) {
+                                const choice = this.dataset.choice;
+                                if (choice && CHOICES.includes(choice)) {
+                                    handlePlayerChoice(choice);
+                                } else {
+                                    console.error('Invalid choice:', choice);
+                                    showErrorMessage('Invalid choice selected. Please try again.');
+                                }
+                            }
+                        } catch (error) {
+                            console.error('Error handling choice click:', error);
+                            showErrorMessage('Failed to process your choice. Please try again.');
+                        }
+                    });
+                } catch (error) {
+                    console.error(`Error adding event listener to choice button ${index}:`, error);
+                }
+            });
         }
-    });
-    
-    // New game button
-    newGameBtn.addEventListener('click', startNewGame);
-    
-    // Back to home button
-    backToHomeBtn.addEventListener('click', function() {
-        window.location.href = 'index.html';
-    });
+        
+        // Set name button
+        if (setNameBtn) {
+            setNameBtn.addEventListener('click', function(e) {
+                try {
+                    e.preventDefault();
+                    handleSetName();
+                } catch (error) {
+                    console.error('Error handling name setting:', error);
+                    showErrorMessage('Failed to set your name. Please try again.');
+                }
+            });
+        }
+        
+        // Enter key in name input
+        if (playerNameInput) {
+            playerNameInput.addEventListener('keypress', function(e) {
+                try {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleSetName();
+                    }
+                } catch (error) {
+                    console.error('Error handling name input keypress:', error);
+                }
+            });
+        }
+        
+        // New game button
+        if (newGameBtn) {
+            newGameBtn.addEventListener('click', function(e) {
+                try {
+                    e.preventDefault();
+                    startNewGame();
+                } catch (error) {
+                    console.error('Error starting new game:', error);
+                    showErrorMessage('Failed to start new game. Please try again.');
+                }
+            });
+        }
+        
+        // Back to home button
+        if (backToHomeBtn) {
+            backToHomeBtn.addEventListener('click', function(e) {
+                try {
+                    e.preventDefault();
+                    window.location.href = 'index.html';
+                } catch (error) {
+                    console.error('Error navigating to home:', error);
+                    showErrorMessage('Failed to navigate to home page.');
+                }
+            });
+        }
+
+        console.log('Event listeners set up successfully');
+    } catch (error) {
+        console.error('Error setting up event listeners:', error);
+        showErrorMessage('Failed to set up game controls. Some features may not work.');
+    }
 }
 
 /**
